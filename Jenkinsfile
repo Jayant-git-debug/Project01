@@ -10,7 +10,7 @@ pipeline {
         stage('Build') {
             steps {
                 sshagent(['c55758a5-d427-462f-ae84-7786d7442c0c']) {
-                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /path/to/your/project && mvn clean install'"
+                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /home/maven/app && mvn clean install'"
                 }
             }
         }
@@ -18,7 +18,7 @@ pipeline {
         stage('SonarCloud Analysis') {
             steps {
                 sshagent(['c55758a5-d427-462f-ae84-7786d7442c0c']) {
-                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /path/to/your/project && mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'"
+                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /home/maven/app && mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'"
                 }
             }
         }
