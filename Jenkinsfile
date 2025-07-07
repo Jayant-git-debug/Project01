@@ -1,26 +1,24 @@
 pipeline {
     agent any
 
-    tools {
-        maven "Maven-3.9.8"   // ✅ must match name configured in Jenkins
-        jdk 'Java-17'      // ✅ optional, based on your project
-    }
-
     environment {
         SONAR_TOKEN = credentials('SONARCLOUD_TOKEN')
+        MAVEN_HOST = 'jenkins@172.31.86.33'
     }
 
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                sshagent(credentials: ['MAVEN_SSH_KEY']) {
+                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /path/to/your/project && mvn clean install'"
+                }
             }
         }
 
         stage('SonarCloud Analysis') {
             steps {
-                withSonarQubeEnv('SonarCloud') {
-                    sh 'mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN'
+                sshagent(credentials: ['MAVEN_SSH_KEY']) {
+                    sh "ssh -o StrictHostKeyChecking=no $MAVEN_HOST 'cd /path/to/your/project && mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN}'"
                 }
             }
         }
