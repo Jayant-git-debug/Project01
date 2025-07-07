@@ -1,14 +1,19 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven 3'   // ✅ must match name configured in Jenkins
+        jdk 'JDK 11'      // ✅ optional, based on your project
+    }
+
     environment {
-        SONAR_TOKEN = credentials('SONARCLOUD_TOKEN')  // Add this in Jenkins credentials
+        SONAR_TOKEN = credentials('SONARCLOUD_TOKEN')
     }
 
     stages {
         stage('Build') {
             steps {
-                sh 'mvn clean install'  // or your build command
+                sh 'mvn clean install'
             }
         }
 
@@ -29,5 +34,3 @@ pipeline {
         }
     }
 }
-
-
