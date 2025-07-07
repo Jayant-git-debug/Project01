@@ -14,8 +14,8 @@ pipeline {
                 sshagent(['c55758a5-d427-462f-ae84-7786d7442c0c']) {
                     sh """
                         ssh -o StrictHostKeyChecking=no \$MAVEN_HOST '
-                        rm -rf \$APP_DIR &&
-                        git clone \$GIT_REPO \$APP_DIR'
+                        rm -rf \\$APP_DIR &&
+                        git clone \\$GIT_REPO \\$APP_DIR'
                     """
                 }
             }
